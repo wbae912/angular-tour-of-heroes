@@ -75,17 +75,18 @@ export class HeroService {
     );
   }
 
-  // /* GET heroes whose name contains search term */
-  // searchHeroes(term: string): Observable<Hero[]> {
-  //   if (!term.trim()) {
-  //     // if not search term, return empty hero array.
-  //     return of([]);
-  //   }
-  //   return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
-  //     tap(x => x.length ?
-  //       this.log(`found heroes matching "${term}"`) :
-  //       this.log(`no heroes matching "${term}"`)),
-  //     catchError(this.handleError<Hero[]>('searchHeroes', []))
-  //   );
-  // }
+  // If there is no search term, it immediately returns an empty array
+  searchHeroes(term: string): Observable<Hero[]> {
+    if(!term.trim()) {
+      return of([]);
+    }
+
+    return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
+      tap(heroesArray => (heroesArray.length)
+          ? this.log(`found heroes matching "${term}"`)
+          : this.log(`no heroes matching "${term}"`)
+      ),
+      catchError(this.handleError<Hero[]>('searchHeroes', []))
+    );
+  }
 }
