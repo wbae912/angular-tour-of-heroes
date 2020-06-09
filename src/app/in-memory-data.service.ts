@@ -22,6 +22,7 @@ export class InMemoryDataService implements InMemoryDbService {
     return {heroes}; // We wrap heroes within an object because we need to return the data as JSON
   }
 
+  // This method is AUTOMATICALLY CALLED (I believe this is part of the built-in package for InMemoryDbService)
   genId(heroes: Hero[]): number {
     return heroes.length > 0 ? Math.max(...heroes.map(hero => hero.id)) + 1 : 11;
   }

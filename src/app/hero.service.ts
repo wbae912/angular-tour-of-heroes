@@ -47,7 +47,7 @@ export class HeroService {
     return this.http.get<Hero>(url).pipe(
       tap(_ => this.log(`fetched hero id=${id}`)),
       catchError(this.handleError<Hero>(`getHero id=${id}`))
-    )
+    );
   }
 
   updateHero(hero: Hero): Observable<any> {
@@ -57,12 +57,13 @@ export class HeroService {
     )
   }
 
-  // addHero(hero: Hero): Observable<Hero> {
-  //   return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions).pipe(
-  //     tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
-  //     catchError(this.handleError<Hero>('addHero'))
-  //   );
-  // }
+  // NOTE: the "hero" object that we pass in only has the name property...We EXPECT the server to generate a new ID for the hero (using the genID method), which it returns in the Observable<Hero> to the caller
+  addHero(hero: Hero): Observable<Hero> { 
+    return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions).pipe(
+      tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
+      catchError(this.handleError)
+    );
+  }
 
   // deleteHero(hero: Hero | number): Observable<Hero> {
   //   const id = typeof hero === 'number' ? hero : hero.id;
